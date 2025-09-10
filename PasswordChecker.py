@@ -61,7 +61,8 @@ if feedback:
     for f in feedback:
         print("\n",f)
 
-
+print("\nChecking If Password has been breached...")
+print(check_pwned(password))
         
         
     
