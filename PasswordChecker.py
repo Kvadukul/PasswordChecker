@@ -1,5 +1,6 @@
 import re
 
+
 def chkpassword_strength(password):
     strength = 0
     weakness = []
@@ -30,7 +31,26 @@ def chkpassword_strength(password):
         return "Medium",weakness
     else:
         return "Weak", weakness
-   
+
+
+
+def check_pwned(password):
+    sha1 = hashlib.sha1(password.encode("utf-8")).hexdigest().upper()
+    prefix, suffix = sha1[:5], sha1[5:]
+
+    url = f"https://api.pwnedpasswords.com/range/{prefix}"
+    response = requests.get(url)
+
+    if response.status_code != 200:
+        return "Error: API request failed"
+
+    hashes = (line.split(":") for line in response.text.splitlines())
+    for h, count in hashes:
+        if h == suffix:
+            return f"This password has been breached {count} times"
+    return "This password has not been found in breaches."          
+        
+           
         
 password = input("Enter a password: ")
 result, feedback = chkpassword_strength(password)
