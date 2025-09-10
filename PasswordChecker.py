@@ -1,5 +1,6 @@
 import re
-
+import requests
+import hashlib
 
 def chkpassword_strength(password):
     strength = 0
